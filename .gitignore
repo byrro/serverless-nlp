@@ -2,6 +2,9 @@
 .chalice/deployments/
 .chalice/venv/
 
+# Spacy
+python_wheels
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
