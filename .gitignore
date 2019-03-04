@@ -1,3 +1,7 @@
+# Chalice Lambda framework
+.chalice/deployments/
+.chalice/venv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
