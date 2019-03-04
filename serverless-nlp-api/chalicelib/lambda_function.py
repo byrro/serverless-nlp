@@ -2,7 +2,6 @@
 import copy
 import json
 import boto3
-import botocore
 from chalicelib.constants import (
     ENV_SPACY_LAMBDA_NAME,
     ENV_SPACY_LAMBDA_REGION,

@@ -1,6 +1,6 @@
 '''Handler of API requests'''
 from chalicelib import constants as c
-from chalicelib.awslambda import lambda_spacy
+from chalicelib.lambda_function import lambda_spacy
 
 
 class APIHandler():

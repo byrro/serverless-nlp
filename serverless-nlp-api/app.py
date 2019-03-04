@@ -1,7 +1,7 @@
 '''API to serve requests for Natural Language Processing Lambda function'''
 import json
 from chalice import Chalice
-from chalicelib.apihandler import APIHandler
+from chalicelib.api_handler import APIHandler
 from chalicelib.app_logger import log
 
 
