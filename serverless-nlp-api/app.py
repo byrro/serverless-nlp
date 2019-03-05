@@ -1,8 +1,7 @@
 '''API to serve requests for Natural Language Processing Lambda function'''
 import json
 from chalice import Chalice
-from chalicelib.api_handler import APIHandler
-from chalicelib.app_logger import log
+from chalicelib.api_handler import request_handler
 
 
 app = Chalice(app_name='serverless-nlp-api')
@@ -58,40 +57,17 @@ def extract():
         'sentence'
         'part-of-speech'
         'named-entity'
-    :arg model: (str) name of spaCy model to use
+    :arg model_name: (str) name of spaCy model to use
     '''
-    try:
-        args = app.current_request.json_body
+    return request_handler(app=app)
 
-        handler = APIHandler(
-            data_type=args.get('data_type'),
-            text=args.get('text'),
-            model=args.get('model'),
-        )
 
-        response = handler.process()
+@app.route('/example/{data_type}', methods=['GET', 'POST'])
+def example(data_type):
+    req_args = {
+        'data_type': data_type,
+        'text': 'Lambda is an event-driven, serverless computing platform provided by Amazon as a part of the Amazon Web Services. It is a computing service that runs code in response to events and automatically manages the computing resources required by that code. It was introduced in November 2014. Andy Jassy is the CEO of Amazon Web Services, which earned $17.4 billion in revenue and $4.331 billion in profits in the year of 2017. Source: Wikipedia.org.',  # NOQA
+        'model_name': 'en_core_web_sm',
+    }
 
-        return {
-            'status': response['status'],
-            'message': response['message'],
-            'request': {
-                'args': args,
-            },
-            'acknowledgement': 'Dashbird.io - Observability tool for '
-                               'serverless applications.',
-            'data': response['data'],
-        }
-
-    except Exception as error:
-        # Log the error encountered
-        log(error=error)
-
-        # Log the user request for debugging purposes
-        # JSON format makes it easier to visualize on CloudWatch or Dashbird
-        print('app.current_request:')
-        print(json.dumps(app.current_request.to_dict()))
-
-        return {
-            'status': 500,
-            'message': 'Oops, there was an internal error! :(',
-        }
+    return request_handler(app=app, req_args=req_args)
