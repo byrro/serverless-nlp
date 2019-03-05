@@ -11,16 +11,17 @@ def lambda_handler(event, context):
     response = request_handler(
         event=event,
         context=context,
+        environ='local' if not context else 'aws',
     )
 
     return response
 
 
 if __name__ == '__main__':
-    request_handler(
+    lambda_handler(
         event={
             'data_type': 'named-entity',
-            'text': 'With AWS Lambda, we get scalability and resilience out-of-the-box. What’s more, AWS also provides built-in monitoring, logging and tracing support through CloudWatch and X-Ray. These built-in tools provide a good starting point but many developers eventually outgrow them as their serverless application becomes more complex.',
+            'text': 'Lambda is an event-driven, serverless computing platform provided by Amazon as a part of the Amazon Web Services. It is a computing service that runs code in response to events and automatically manages the computing resources required by that code. It was introduced in November 2014. Source: https://en.wikipedia.org/wiki/AWS_Lambda',  # NOQA
             'model_name': 'en_core_web_sm',
         },
         context=None,

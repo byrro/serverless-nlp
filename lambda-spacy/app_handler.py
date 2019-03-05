@@ -5,7 +5,7 @@ from nlp import SpacyWrapper
 from app_logger import log
 
 
-def request_handler(event, context):
+def request_handler(event, context, environ):
     '''Handles Lambda invocation requests
     '''
     try:
@@ -14,7 +14,7 @@ def request_handler(event, context):
         print(json.dumps(event))
 
         # Instantiate spaCy wrapper
-        spacy_nlp = SpacyWrapper()
+        spacy_nlp = SpacyWrapper(environ=environ)
 
         # Extract NLP data requested
         data = spacy_nlp.extract(

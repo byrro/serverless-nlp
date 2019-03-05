@@ -2,7 +2,6 @@
 import os
 from zipfile import ZipFile
 import boto3
-import botocore
 import spacy
 import constants as c
 
@@ -10,8 +9,9 @@ import constants as c
 class SpacyWrapper():
     '''Wrapper class for interacting with spaCy NLP library
     '''
-    def __init__(self, *args, **kwargs):
-        pass
+    def __init__(self, environ):
+        self.environ = environ
+        self.path_prefix = '/' if self.environ == 'aws' else ''
 
     def extract(self, data_type, text, model_name):
         '''Extract NLP data for the text provided
@@ -98,6 +98,9 @@ class SpacyWrapper():
     def extract_ner(self, model, text):
         '''Extract named entities from a text
 
+        For a full description of NER annotations and labels, please refer to
+        the spaCy documentation: https://spacy.io/api/annotation
+
         :arg model: (spaCy model) a spaCy NLP model
         :arg text: (str) text to process
         '''
@@ -106,9 +109,10 @@ class SpacyWrapper():
         entities = [
             {
                 'text': str(entity.text),
-                'start': int(entity.start_char),
-                'end': int(entity.end_char),
-                'label': str(entity.label_),
+                'start_char': int(entity.start_char),
+                'end_char': int(entity.end_char),
+                'entity_label': str(entity.label_),
+                'description': c.SPACY_NER_LABEL.get(entity.label_, 'Unknown'),
             }
             for entity in parser.ents
         ]
@@ -120,7 +124,7 @@ class SpacyWrapper():
 
         :arg model_name: (str) name of spaCy model to load
         '''
-        model_path = os.path.join('tmp', model_name)
+        model_path = f'{self.path_prefix}tmp/{model_name}'
 
         # Check whether the model is already in local filesystem
         if not os.path.isdir(model_path):
@@ -138,18 +142,24 @@ class SpacyWrapper():
         '''
         print('Model not available locally, downloading from S3')
 
+        tmp_path = f'{self.path_prefix}tmp'
         file_name = f'{model_name}.zip'
-        local_path = os.path.join('tmp', file_name)
-        remote_path = os.path.join(file_name)
+        local_file = f'{tmp_path}/{file_name}'
+        remote_file = file_name
 
         s3 = boto3.resource('s3')
 
+        print('tmp_path:', tmp_path)
+        print('local_file:', local_file)
+        print('remote_file:', remote_file)
+        print('s3 bucket:', c.MODEL_S3_BUCKET_NAME)
+
         s3.Bucket(c.MODEL_S3_BUCKET_NAME) \
-          .download_file(remote_path, local_path)
+          .download_file(remote_file, local_file)
 
         # Unzip the model in local filesystem
-        with ZipFile(local_path, 'r') as zip_file:
-            zip_file.extractall('tmp')
+        with ZipFile(local_file, 'r') as zip_file:
+            zip_file.extractall(tmp_path)
 
         # Delete the zip file to save space on the local /tmp directory
-        os.remove(local_path)
+        os.remove(local_file)
