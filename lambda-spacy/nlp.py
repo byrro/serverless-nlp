@@ -149,11 +149,6 @@ class SpacyWrapper():
 
         s3 = boto3.resource('s3')
 
-        print('tmp_path:', tmp_path)
-        print('local_file:', local_file)
-        print('remote_file:', remote_file)
-        print('s3 bucket:', c.MODEL_S3_BUCKET_NAME)
-
         s3.Bucket(c.MODEL_S3_BUCKET_NAME) \
           .download_file(remote_file, local_file)
 

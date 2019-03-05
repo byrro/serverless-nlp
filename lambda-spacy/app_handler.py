@@ -12,6 +12,7 @@ def request_handler(event, context, environ):
         # Log the request payload event for debugging and monitoring purposes
         print('REQUEST PAYLOAD EVENT:')
         print(json.dumps(event))
+        print('')
 
         # Instantiate spaCy wrapper
         spacy_nlp = SpacyWrapper(environ=environ)
@@ -56,6 +57,7 @@ def request_handler(event, context, environ):
             'data': data,
         }
 
+        print('')
         print('RESPONSE:')
         print(json.dumps(response))
 

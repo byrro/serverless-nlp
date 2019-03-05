@@ -21,7 +21,7 @@ if __name__ == '__main__':
     lambda_handler(
         event={
             'data_type': 'named-entity',
-            'text': 'Lambda is an event-driven, serverless computing platform provided by Amazon as a part of the Amazon Web Services. It is a computing service that runs code in response to events and automatically manages the computing resources required by that code. It was introduced in November 2014. Source: https://en.wikipedia.org/wiki/AWS_Lambda',  # NOQA
+            'text': 'Lambda is an event-driven, serverless computing platform provided by Amazon as a part of the Amazon Web Services. It is a computing service that runs code in response to events and automatically manages the computing resources required by that code. It was introduced in November 2014. Headquartered in Seattle, USA and leaded by Andy Jassy (CEO), Amazon Web Services made $17.4 billion in revenue and $4.331 billion in profits in the year of 2017. Source: Wikipedia.org.',  # NOQA
             'model_name': 'en_core_web_sm',
         },
         context=None,
