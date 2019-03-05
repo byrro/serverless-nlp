@@ -1,0 +1,7 @@
+{
+  "version": "2.0",
+  "app_name": "serverless-nlp-api",
+  "manage_iam_role": false,
+  "iam_role_arn": "arn:aws:iam::177297269352:role/service-role/ServerlessNLPSpacyRole",
+  "autogen_policy": true
+}
