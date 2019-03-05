@@ -37,9 +37,3 @@ This demo API only supports text in English, having only one model deployed (en_
 
 - [Python 3.6+](https://www.python.org/downloads/release/python-370/)
 - [pip 18.1+](https://pypi.org/project/pip/)
-
-You can run the app locally on Linux, iOS or Windows.
-
-## Setup & Deployment
-
-
